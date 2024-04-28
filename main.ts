@@ -1,8 +1,11 @@
 #! /usr/bin/env node  
 import inquirer from "inquirer";
+import clear from "clear";
 
-let ask = "y";
+let ask = "n";
 do{
+    // process.stdout.write('\u001b[2J\u001b[0;0H'); ANSi escape code for clear screen without using any library
+    clear();
     const answer = await inquirer.prompt([
         {
             type: "number",
@@ -15,9 +18,10 @@ do{
             message: "Enter 2nd number: "   
         },
         {
-            type: "input",
+            type: "list",
             name: "op",
-            message: "Enter operator (+, -, x, /): "   
+            message: "\nChoose operation you want to perform: ",   
+            choices: ["Addition (+)", "Subtraction (-)", "Multiplication (x)", "Division (/)"]
         }
     ])
 
@@ -25,20 +29,17 @@ do{
     let num2 = answer.n2;
     let operator = answer.op;
 
-    if (operator == "+"){
+    if (answer.op == "Addition (+)"){
         console.log(`${num1} + ${num2} = ${num1+num2}`);
     }
-    else if(operator == "-"){
+    else if(answer.op == "Subtraction (-)"){
         console.log(`${num1} - ${num2} = ${num1-num2}`);
     }
-    else if(operator == "x" || operator == "X" || operator == "*"){
+    else if(answer.op == "Multiplication (x)"){
         console.log(`${num1} x ${num2} = ${num1*num2}`);
     }
-    else if(operator == "/"){
+    else if(answer.op == "Division (/)"){
         console.log(`${num1} / ${num2} = ${num1/num2}`);
-    }
-    else{
-        console.log(`Please enter valid operator...`);
     }
     const response = await inquirer.prompt([
         {
@@ -49,7 +50,7 @@ do{
     ])
     ask = response.q1.toLowerCase();
 
-}while(ask != "n");
+}while(ask == "y");
 
 
 console.log("\nThanks for using my calculator :)");
